@@ -1,0 +1,97 @@
+<div class="container mt-4">
+  <h1 class="text-center mb-4">🍣 Sushi Staff Manager</h1>
+
+  <!-- SEZIONE ORDINI -->
+  <div class="card mb-5 shadow">
+    <div class="card-header bg-primary text-white">
+      <h3>📋 Ordini in Tempo Reale</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>Orario</th>
+              <th>Tavolo</th>
+              <th>Cliente</th>
+              <th>Prodotto</th>
+              <th>Stato</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders">
+              <td>{{ order.created_at | date:'HH:mm' }}</td>
+              <td><strong>{{ order.table_code }}</strong></td>
+              <td>{{ order.customer_name }}</td>
+              <td>{{ order.product_name }} (x{{ order.quantity }})</td>
+              <td>
+                <span class="badge" 
+                  [ngClass]="{
+                    'bg-warning': order.status === 'in attesa',
+                    'bg-info': order.status === 'in preparazione',
+                    'bg-success': order.status === 'servito'
+                  }">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-info me-1" (click)="changeStatus(order.id, 'in preparazione')">Prep</button>
+                <button class="btn btn-sm btn-outline-success" (click)="changeStatus(order.id, 'servito')">Servito</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="orders.length === 0" class="alert alert-info">
+          Nessun ordine attivo al momento.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEZIONE GESTIONE MENU -->
+  <div class="card shadow">
+    <div class="card-header bg-danger text-white">
+      <h3>🍱 Gestione Menu</h3>
+    </div>
+    <div class="card-body">
+      
+      <!-- Form Aggiunta Piatto -->
+      <div class="row mb-4 bg-light p-3 rounded">
+        <h5>Aggiungi Nuovo Piatto</h5>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Nome Piatto" [(ngModel)]="newProduct.name">
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control" placeholder="Prezzo" [(ngModel)]="newProduct.price">
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="newProduct.category_id">
+            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="URL Immagine" [(ngModel)]="newProduct.image_url">
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-success w-100" (click)="addProduct()">+</button>
+        </div>
+      </div>
+
+      <!-- Lista Piatti Esistenti -->
+      <div class="row">
+        <div class="col-md-4 mb-3" *ngFor="let item of menu">
+          <div class="card h-100">
+            <img [src]="item.image_url" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.name }}</h5>
+              <p class="card-text">{{ item.price }} € <br> <small class="text-muted">{{ item.category_name }}</small></p>
+              <button class="btn btn-danger btn-sm" (click)="deleteProduct(item.id)">Elimina</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
