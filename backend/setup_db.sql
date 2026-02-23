@@ -1,5 +1,4 @@
-CREATE DATABASE IF NOT EXISTS sushi_db;
-USE sushi_db;
+USE wrapper;
 
 -- Tabella Categorie
 CREATE TABLE IF NOT EXISTS categories (
@@ -17,7 +16,7 @@ CREATE TABLE IF NOT EXISTS products (
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
--- Tabella Tavoli (per gestire i codici tavolo attivi)
+-- Tabella Tavoli
 CREATE TABLE IF NOT EXISTS tables (
     code VARCHAR(10) PRIMARY KEY,
     active BOOLEAN DEFAULT TRUE
@@ -30,12 +29,12 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_name VARCHAR(50),
     product_id INT,
     quantity INT DEFAULT 1,
-    status VARCHAR(20) DEFAULT 'in attesa', -- in attesa, in preparazione, servito
+    status VARCHAR(20) DEFAULT 'in attesa',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- Inserimento Dati di Prova (Se vuoti)
+-- Inserimento Dati di Prova
 INSERT IGNORE INTO categories (id, name) VALUES 
 (1, 'Nigiri'),
 (2, 'Uramaki'),
@@ -47,5 +46,5 @@ INSERT IGNORE INTO products (name, price, category_id, image_url) VALUES
 ('California Roll', 8.00, 2, 'https://upload.wikimedia.org/wikipedia/commons/1/1a/California_roll.jpg'),
 ('Salmon Sashimi', 12.00, 3, 'https://upload.wikimedia.org/wikipedia/commons/f/f6/Sashimi_salmon.jpg');
 
--- Creiamo un tavolo di prova
+-- Crea un tavolo di prova
 INSERT IGNORE INTO tables (code) VALUES ('T1'), ('T2');

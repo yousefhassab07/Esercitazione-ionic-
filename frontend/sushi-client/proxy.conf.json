@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://refactored-waffle-r49qjg9jqwp5cwp57-5000.app.github.dev",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

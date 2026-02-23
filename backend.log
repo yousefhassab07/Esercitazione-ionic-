@@ -1,0 +1,19 @@
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.0.1.191:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 608-294-889
+127.0.0.1 - - [23/Feb/2026 18:31:23] "GET / HTTP/1.1" 200 -
+ * Detected change in '/workspaces/Esercitazione-ionic-/backend/DatabaseWrapper.py', reloading
+ * Restarting with stat
+Traceback (most recent call last):
+  File "/workspaces/Esercitazione-ionic-/backend/app.py", line 3, in <module>
+    from DatabaseWrapper import DatabaseWrapper
+  File "/workspaces/Esercitazione-ionic-/backend/DatabaseWrapper.py", line 3, in <module>
+    from dotenv import load_dotenv
+ModuleNotFoundError: No module named 'dotenv'

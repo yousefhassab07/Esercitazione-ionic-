@@ -1,0 +1,30 @@
+> ng run app:serve --host=0.0.0.0 --port=8100
+[ng] Warning: This is a simple server for use in testing or debugging Angular applications
+[ng] locally. It hasn't been reviewed for security issues.
+[ng] Binding this server to an open connection can result in compromising your application or
+[ng] computer. Using a different host than the one passed to the "--host" flag might result in
+[ng] websocket connection issues. You might need to use "--disable-host-check" if that's the
+[ng] case.
+[ng]     
+[ng] [33m❯[39m Building...
+[ng] [32m✔[39m Building...
+[ng] Initial chunk files   | Names         |  Raw size
+[ng] styles.css            | styles        |  57.26 kB | 
+[ng] main.js               | main          |   3.11 kB | 
+[ng] chunk-EVSPGG2W.js     | -             |   1.64 kB | 
+[ng] polyfills.js          | polyfills     | 143 bytes | 
+[ng]                       | Initial total |  62.15 kB
+[ng] Lazy chunk files      | Names         |  Raw size
+[ng] home.page-SMGXB2CE.js | home-page     |  24.20 kB | 
+[ng] Application bundle generation complete. [2.993 seconds] - 2026-02-23T18:31:29.266Z
+[ng] NOTE: Raw file sizes do not reflect development server per-request transformations.
+
+[[40mINFO[49m] Development server running!
+       
+       Local: http://localhost:8100
+       External: http://10.0.1.191:8100
+       
+       Use Ctrl+C to quit this process
+
+[ng]   ➜  Local:   http://localhost:8100/
+[ng]   ➜  Network: http://10.0.1.191:8100/

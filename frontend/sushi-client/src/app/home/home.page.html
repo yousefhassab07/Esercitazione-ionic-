@@ -1,20 +1,97 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="primary">
     <ion-title>
-      Blank
+      Sushi App 🍣
     </ion-title>
+    <ion-buttons slot="end" *ngIf="isLoggedIn">
+      <ion-button>
+        {{ tableCode }} - {{ customerName }}
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <!-- LOGIN SCREEN -->
+  <div *ngIf="!isLoggedIn" style="display: flex; flex-direction: column; height: 100%; justify-content: center;">
+    <h2 class="ion-text-center">Benvenuto!</h2>
+    <p class="ion-text-center">Inserisci i tuoi dati per ordinare.</p>
+    
+    <ion-item>
+      <ion-label position="floating">Codice Tavolo</ion-label>
+      <ion-input [(ngModel)]="tableCode" placeholder="es. T1"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Il tuo Nome</ion-label>
+      <ion-input [(ngModel)]="customerName" placeholder="es. Mario"></ion-input>
+    </ion-item>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-button expand="block" class="ion-margin-top" (click)="login()" [disabled]="!tableCode || !customerName">
+      Inizia a Ordinare
+    </ion-button>
+  </div>
+
+  <!-- MAIN APP -->
+  <div *ngIf="isLoggedIn">
+    <ion-segment [(ngModel)]="segment">
+      <ion-segment-button value="menu">
+        <ion-label>Menu</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="orders">
+        <ion-label>I Miei Ordini</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- VISTA MENU -->
+    <div *ngIf="segment === 'menu'">
+      <ion-list *ngFor="let cat of categories">
+        <ion-list-header>
+          <ion-label><strong>{{ cat }}</strong></ion-label>
+        </ion-list-header>
+        
+        <ion-item *ngFor="let item of menu" [hidden]="item.category_name !== cat">
+          <ion-thumbnail slot="start">
+            <img [src]="item.image_url" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ item.name }}</h2>
+            <p>{{ item.price | currency:'EUR' }}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" (click)="addToCart(item)">
+            Aggiungi
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- VISTA ORDINI -->
+    <div *ngIf="segment === 'orders'">
+      <ion-list>
+        <ion-item *ngFor="let order of placedOrders">
+          <ion-label>
+            <h2>{{ order.product_name }} (x{{ order.quantity }})</h2>
+            <p>{{ order.created_at | date:'HH:mm' }} - {{ order.customer_name }}</p>
+          </ion-label>
+          <ion-badge slot="end" [color]="order.status === 'in attesa' ? 'warning' : 'success'">
+            {{ order.status }}
+          </ion-badge>
+        </ion-item>
+        <div *ngIf="placedOrders.length === 0" class="ion-text-center ion-padding">
+          Nessun ordine inviato
+        </div>
+      </ion-list>
+    </div>
   </div>
 </ion-content>
+
+<ion-footer *ngIf="isLoggedIn && segment === 'menu' && cart.length > 0">
+  <ion-toolbar color="light">
+    <ion-title size="small">Totale: {{ getTotal() | currency:'EUR' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="success" fill="solid" (click)="sendOrder()">
+        Invia Ordine ({{ cart.length }})
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
